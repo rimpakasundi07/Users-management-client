@@ -3,14 +3,33 @@ import React, { use } from "react";
 const Users = ({ UsersPromise }) => {
   const users = use(UsersPromise);
   console.log(users);
+
+  const handleAddUser = (e) => {
+    e.preventDefault();
+    const name = e.target.name.value;
+    const email = e.target.email.value;
+    console.log(name, email);
+    // send data to the server
+    fetch("http://localhost:3000/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("after post", data);
+      });
+  };
+
   return (
     <div>
       <div className="">
         <h3>Add a user</h3>
-        <form>
-          <input type="text" />
+        <form onSubmit={handleAddUser}>
+          <input name="name" type="text" />
           <br></br>
-          <input type="email" name="" id="" />
+          <input type="email" name="email" id="" />
           <br></br>
           <button> Add user </button>
         </form>
@@ -27,3 +46,10 @@ const Users = ({ UsersPromise }) => {
 };
 
 export default Users;
+
+/**
+ *
+ *  Have to send request object to the server
+ *  1. Maintion method : post
+ *  2. Maintion header : about json data
+ */
